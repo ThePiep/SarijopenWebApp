@@ -1,13 +1,13 @@
-"use client";
-import { FormProvider, useForm } from "react-hook-form";
-import { InferType, Schema, number, object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { FormTextarea } from "@/components/Input/FormTextarea";
-import React from "react";
-import { FormBewonerGastInput } from "@/components/Input/FormBewonerGastInput";
-import { nieuweUitspraakSchema as schema } from "../api/quotes/schema";
-import { bewoners } from "@/models/bewoners";
-import { Spinner } from "@/components/Spinner";
+'use client';
+import { FormProvider, useForm } from 'react-hook-form';
+import { InferType, Schema, number, object, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormTextarea } from '@/components/Input/FormTextarea';
+import React from 'react';
+import { FormBewonerGastInput } from '@/components/Input/FormBewonerGastInput';
+import { nieuweUitspraakSchema as schema } from '../api/quotes/schema';
+import { bewoners } from '@/models/bewoners';
+import { Spinner } from '@/components/Spinner';
 
 interface Props {
   children: React.ReactNode;
@@ -18,7 +18,6 @@ type FormData = InferType<typeof schema>;
 
 export const UitspraakForm = ({ bewoners, children }: Props) => {
   const methods = useForm<FormData>({
-    // mode: "all",
     resolver: yupResolver(schema),
   });
 
@@ -33,11 +32,11 @@ export const UitspraakForm = ({ bewoners, children }: Props) => {
   const onSubmit = async (data: FormData) => {
     alert(JSON.stringify(data));
     setLoading(true);
-    const res = await fetch("/api/quotes", {
-      method: "POST",
+    const res = await fetch('/api/quotes', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -66,51 +65,51 @@ export const UitspraakForm = ({ bewoners, children }: Props) => {
   return (
     <FormProvider {...methods}>
       <div
-        className={`transition ease-in-out    duration-500 overflow-hidden ${
-          showForm ? "max-h-96" : "max-h-0 "
+        className={`transition-[max-height] ease-in-out duration-400 overflow-hidden  ${
+          showForm ? 'max-h-80' : 'max-h-0'
         }`}
       >
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="form-control grid grid-cols-6 md:grid-cols-12 gap-x-4">
-            <div className="col-span-6">
+          <div className='form-control grid grid-cols-6 md:grid-cols-12 gap-x-4'>
+            <div className='col-span-6'>
               <FormBewonerGastInput
-                label="Door"
+                label='Door'
                 schema={schema}
-                bewonerFormName={"bewonerID"}
-                gastFormName={"gast"}
+                bewonerFormName={'bewonerID'}
+                gastFormName={'gast'}
                 options={bewonerOptions}
               />
             </div>
-            <div className="col-span-6">
+            <div className='col-span-6'>
               <FormBewonerGastInput
-                label="Tegen"
+                label='Tegen'
                 schema={schema}
-                bewonerFormName={"tegenbewonerID"}
-                gastFormName={"tegengast"}
+                bewonerFormName={'tegenbewonerID'}
+                gastFormName={'tegengast'}
                 options={bewonerOptions}
               />
             </div>
-            <div className="col-span-full">
-              <FormTextarea label="Uitspraak" name="uitspraak" />
+            <div className='col-span-full'>
+              <FormTextarea label='Uitspraak' name='uitspraak' />
             </div>
           </div>
         </form>
       </div>
 
-      <div className="divider mt-8">
+      <div className='divider mt-8'>
         {!showForm ? (
-          <div className="btn" onClick={() => setShowForm(true)}>
+          <div className='btn' onClick={() => setShowForm(true)}>
             Nieuw uitspraak
           </div>
         ) : loading ? (
           <Spinner />
         ) : (
           <>
-            <button className="btn" onClick={() => handleCancel()}>
+            <button className='btn' onClick={() => handleCancel()}>
               Annuleren
             </button>
             <button
-              className="btn"
+              className='btn'
               onClick={() => methods.handleSubmit(onSubmit)()}
             >
               Opslaan
@@ -118,7 +117,8 @@ export const UitspraakForm = ({ bewoners, children }: Props) => {
           </>
         )}
       </div>
-      {children}
+
+      {/* {children} */}
     </FormProvider>
   );
 };
