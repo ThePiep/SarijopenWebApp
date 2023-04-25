@@ -3,10 +3,11 @@ import updateLocale from "dayjs/plugin/updateLocale";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/nl";
 import { uitspraken } from "@/models/uitspraken";
-import { bewoners } from "@/models/bewoners";
 import sequelize from "@/lib/sequelize";
 import { initModels } from "@/models/init-models";
-import { UitspraakForm } from "@/components/UitspraakForm";
+import { getBewoners } from "@/util/bewoners";
+import { UitspraakForm } from "./UitspraakForm";
+
 dayjs.extend(updateLocale);
 dayjs.locale("nl");
 
@@ -19,40 +20,25 @@ export async function getQuotes() {
     order: [["id", "desc"]],
   });
 
-  const bew = new Map<number, string>();
+  const bewoners = await getBewoners();
 
-  for (const u of obj) {
-    if (u.bewonerID !== 0 && !bew.has(u.bewonerID)) {
-      const b = await bewoners.findByPk(u.bewonerID, { attributes: ["naam"] });
-      if (b !== null) {
-        bew.set(u.bewonerID, b.naam);
-      }
-    }
-    if (u.tegenbewonerID !== 0 && !bew.has(u.tegenbewonerID)) {
-      const b = await bewoners.findByPk(u.tegenbewonerID, {
-        attributes: ["naam"],
-      });
-      if (b !== null) {
-        bew.set(u.tegenbewonerID, b.naam);
-      }
-    }
-  }
-  return { obj, bew };
+  return { obj, bewoners };
 }
 
 export default async function Quotes() {
-  const { obj, bew } = await getQuotes();
+  const { obj, bewoners } = await getQuotes();
 
   return (
     <>
-      <UitspraakForm bs={Array.from(bew)}>
+      <UitspraakForm bewoners={bewoners}>
         {obj.map((u, index) => {
           const auteur = u.gast.length
             ? u.gast
-            : bew.get(u.bewonerID) ?? u.bewonerID;
+            : bewoners.find((b) => b.id === u.bewonerID)?.naam ?? u.bewonerID;
           const ontvanger = u.tegengast.length
             ? u.tegengast
-            : bew.get(u.tegenbewonerID) ?? undefined;
+            : bewoners.find((b) => b.id === u.tegenbewonerID)?.naam ??
+              undefined;
           const tijd = dayjs(`${u.datum} ${u.tijd}`);
           return (
             <div key={index} className="chat chat-start mb-1">
