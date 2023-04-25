@@ -42,3 +42,6 @@ next-env.d.ts
 
 # sequelize database models
 /models
+
+# cache files
+build.cache
