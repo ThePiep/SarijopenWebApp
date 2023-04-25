@@ -118,7 +118,7 @@ export const UitspraakForm = ({ bewoners, children }: Props) => {
         )}
       </div>
 
-      {/* {children} */}
+      {children}
     </FormProvider>
   );
 };
