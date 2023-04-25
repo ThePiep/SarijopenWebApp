@@ -15,7 +15,7 @@ export const QuotesCard = async ({ ...props }: CardProps) => {
 
   return (
     <Link href="/quotes">
-      <Card {...props} title={"Uitspraken"}>
+      <Card {...props} title={"Citaten boek"}>
         <div className="stats bg-inherit text-inherit">
           <div className="stat place-items-center">
             <div className="stat-value">{count}</div>

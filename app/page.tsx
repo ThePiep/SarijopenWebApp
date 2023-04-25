@@ -4,8 +4,8 @@ import { QuotesCard } from "@/components/Card/QuotesCard";
 
 export default function HomePage() {
   return (
-    <main className="m-4 text-slate-700 border-cyan-200 ">
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-2 grid-flow-row-dense">
+    <main className="text-slate-700 ">
+      <div className="grid grid-flow-row-dense grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-6">
         <KPCard colSpan={2} title="KP Cool" color="red" />
         <KPCard colSpan={1} title="KP Hot" color="orange" />
         <KPCard colSpan={1} title="Weekend KP" color="yellow" />

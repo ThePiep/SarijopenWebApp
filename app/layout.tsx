@@ -29,7 +29,9 @@ export default function RootLayout({
             value={{ color: "black", className: "global-class-name" }}
           >
             <Nav />
-            <div className={"container mx-auto pt-16 px-10 "}>{children}</div>
+            <div className={"container mx-auto px-2 pt-20 pb-6 "}>
+              {children}
+            </div>
           </IconContext.Provider>
         </SessionProvider>
       </body>

@@ -1,20 +1,21 @@
 "use client";
+import { Spinner } from "@/components/Spinner";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function LoginButton() {
   const { data: session, status } = useSession();
   if (status === "loading") {
     return (
-      <button disabled className="btn btn-primary ">
-        Loading...
+      <button disabled className="btn-primary btn-sm ">
+        <Spinner />
       </button>
     );
   }
   if (session) {
     return (
       <>
-        <a className="btn btn-ghost  normal-case ">{session.user?.name}</a>
-        <button className={"btn btn-primary "} onClick={() => signOut()}>
+        <a className="btn normal-case ">{session.user?.name}</a>
+        <button className={"btn  btn-sm "} onClick={() => signOut()}>
           Sign out
         </button>
       </>
@@ -22,7 +23,7 @@ export default function LoginButton() {
   }
   return (
     <>
-      <button className={"btn btn-primary "} onClick={() => signIn()}>
+      <button className={" btn "} onClick={() => signIn()}>
         Sign in
       </button>
     </>
