@@ -62,10 +62,7 @@ export const getChatFreshGPTArtikel = async () => {
   console.log('ASKING CHATGPT!');
 
   const myHeaders = new Headers();
-  myHeaders.append(
-    'Authorization',
-    'Bearer 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'
-  );
+  myHeaders.append('Authorization', `Bearer ${process.env.OPENAI_API_KEY}`);
   myHeaders.append('Content-Type', 'application/json');
 
   const raw = JSON.stringify({
