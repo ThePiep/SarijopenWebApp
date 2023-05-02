@@ -1,15 +1,17 @@
-import dayjs from "dayjs";
-import updateLocale from "dayjs/plugin/updateLocale";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/nl";
-import { uitspraken } from "@/models/uitspraken";
-import sequelize from "@/lib/sequelize";
-import { initModels } from "@/models/init-models";
-import { getBewoners } from "@/util/bewoners";
-import { UitspraakForm } from "./UitspraakForm";
+export const revalidate = 10;
+
+import dayjs from 'dayjs';
+import updateLocale from 'dayjs/plugin/updateLocale';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/nl';
+import { uitspraken } from '@/models/uitspraken';
+import sequelize from '@/lib/sequelize';
+import { initModels } from '@/models/init-models';
+import { getBewoners } from '@/util/bewoners';
+import { UitspraakForm } from './UitspraakForm';
 
 dayjs.extend(updateLocale);
-dayjs.locale("nl");
+dayjs.locale('nl');
 
 dayjs.extend(relativeTime);
 
@@ -17,7 +19,7 @@ export async function getQuotes() {
   initModels(sequelize);
   const obj = await uitspraken.findAll({
     limit: 10,
-    order: [["id", "desc"]],
+    order: [['id', 'desc']],
   });
 
   const bewoners = await getBewoners();
@@ -41,17 +43,17 @@ export default async function Quotes() {
               undefined;
           const tijd = dayjs(`${u.datum} ${u.tijd}`);
           return (
-            <div key={index} className="chat chat-start mb-1">
-              <div className="chat-header">
-                {`${auteur} ${ontvanger ? `tegen ${ontvanger}` : ""}  `}
+            <div key={index} className='chat chat-start mb-1'>
+              <div className='chat-header'>
+                {`${auteur} ${ontvanger ? `tegen ${ontvanger}` : ''}  `}
                 <div
-                  className="tooltip tooltip-right "
-                  data-tip={tijd.format("DD/MM/YYYY HH:mm")}
+                  className='tooltip tooltip-right '
+                  data-tip={tijd.format('DD/MM/YYYY HH:mm')}
                 >
-                  <time className="text-cs opacity-50">{tijd.fromNow()}</time>
+                  <time className='text-cs opacity-50'>{tijd.fromNow()}</time>
                 </div>
               </div>
-              <div className="chat-bubble">{u.uitspraak}</div>
+              <div className='chat-bubble'>{u.uitspraak}</div>
             </div>
           );
         })}

@@ -1,6 +1,6 @@
-import { Dialect, Sequelize } from "sequelize";
-import mysql from "mysql2";
-import { initModels } from "@/models/init-models";
+import { Dialect, Sequelize } from 'sequelize';
+import mysql2 from 'mysql2';
+import { initModels } from '@/models/init-models';
 
 const sequelize = new Sequelize({
   username: process.env.DB_USERNAME,
@@ -8,7 +8,7 @@ const sequelize = new Sequelize({
   database: process.env.DB_DATABASE,
   host: process.env.DB_HOST,
   dialect: 'mysql',
-  dialectModule: mysql,
+  dialectModule: mysql2,
 });
 
 initModels(sequelize);

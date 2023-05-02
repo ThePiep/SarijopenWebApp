@@ -4,20 +4,21 @@ import { IconType } from 'react-icons';
 export interface CardProps {
   title: string;
   children?: React.ReactNode;
-  // colSpan?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
   colSpan?: keyof typeof spanMap;
+  colSpanMd?: keyof typeof spanMap;
+  colSpanXl?: keyof typeof spanMap;
   color?: keyof typeof colorMap;
   titleIcon?: JSX.Element;
 }
 
 enum colorMap {
-  red = 'bg-red-100',
-  orange = 'bg-orange-100',
-  yellow = 'bg-yellow-100',
-  green = 'bg-green-100',
-  blue = 'bg-blue-100',
-  purple = 'bg-purple-100',
-  pink = 'bg-pink-100',
+  red = 'bg-pocean-50',
+  orange = 'bg-porange-100',
+  yellow = 'bg-pgreen-100',
+  green = 'bg-pgreen-100',
+  blue = 'bg-pblue-100',
+  purple = 'bg-pocean-50',
+  pink = 'bg-pblue-100',
 }
 
 // enum spanMap {
@@ -32,11 +33,20 @@ const spanMap = {
   4: 'col-span-4',
   5: 'col-span-5',
   6: 'col-span-6',
+  7: 'col-span-7',
+  8: 'col-span-8',
+  9: 'col-span-9',
+  10: 'col-span-10',
+  11: 'col-span-11',
+  // 12: 'col-span-12',
+  12: 'col-span-full',
 };
 
 export const Card = ({
   children,
   colSpan,
+  colSpanMd,
+  colSpanXl,
   color,
   title,
   titleIcon,
@@ -44,15 +54,20 @@ export const Card = ({
   const c = colorMap[color ?? 'red'];
   return (
     <div
-      className={`card shadow-xl ${colorMap[color ?? 'red']} card-bordered ${
-        spanMap[colSpan ?? 1]
-      } h-44 overflow-hidden`}
+      className={`card rounded-md border-gray-500 border-2 border-b-5 border-r-5 
+      h-44 overflow-hidden
+      ${colorMap[color ?? 'red']}
+      ${spanMap[colSpan ?? 1]} 
+      ${colSpanMd ? `md:${spanMap[colSpanMd]}` : ''}
+      ${colSpanXl ? `xl:${spanMap[colSpanXl]}` : ''}
+      `}
     >
       <div className='card-body p-4'>
-        <h2 className='card-title border-b-2 border-slate-600'>
+        <h2 className='card-title border-b-2 border-slate-800'>
           {title}
           <span className='mr-0 ml-auto'>{titleIcon} </span>
         </h2>
+        {/* <div className='mb-2 max-h-max'>{children}</div> */}
         {children}
       </div>
     </div>

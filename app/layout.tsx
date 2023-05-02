@@ -1,8 +1,9 @@
 'use client';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import './globals.css';
 import { IconContext } from 'react-icons';
 import { Nav } from '@/components/Nav';
+import { ContentWrapper } from '@/components/ContentWrappers';
 
 export const metadata = {
   title: 'Huize Sarijopen',
@@ -15,22 +16,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' data-theme='luxury'>
+    <html lang='en' data-theme='lofi'>
       <meta name='viewport' content='width=device-width' />
       <meta name='description' content={metadata.description} />
       <meta name='theme-color' content='#6495ed' />
       <title>{metadata.title}</title>
 
       <link rel='manifest' href='/manifest.json' />
-      <body>
+      <body className='bg-orange-50 min-h-screen'>
         <SessionProvider>
           <IconContext.Provider
             value={{ color: 'black', className: 'global-class-name' }}
           >
             <Nav />
-            <div className={'container mx-auto px-2 pt-20 pb-6 '}>
-              {children}
-            </div>
+            <ContentWrapper>{children}</ContentWrapper>
           </IconContext.Provider>
         </SessionProvider>
       </body>

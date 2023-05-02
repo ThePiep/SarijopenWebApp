@@ -1,11 +1,11 @@
-import { SuperController, SuperControllerProps } from "./SuperController";
+import { SuperController, SuperControllerProps } from './SuperController';
 
 export interface SelectOption {
   value: number;
   label: string;
 }
 
-interface Props extends Omit<SuperControllerProps, "render"> {
+interface Props extends Omit<SuperControllerProps, 'render'> {
   allowEmpty?: boolean;
   options: SelectOption[];
 }
@@ -15,7 +15,7 @@ export const FormSelect = ({ options, allowEmpty = false, ...rest }: Props) => {
     <SuperController
       render={(x) => (
         <select
-          className="select select-bordered"
+          className='select  select-ghost'
           onBlur={x.field.onBlur}
           value={x.field.value ?? -1}
         >
