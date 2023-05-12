@@ -1,10 +1,16 @@
 import LoginButton from '@/app/LoginButton';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { FaArrowLeft } from 'react-icons/fa';
 import { FiMenu } from 'react-icons/fi';
+import { CircleButton } from './Button/CircleButton';
 
 export const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const pathname = usePathname();
+  const router = useRouter();
 
   const close = () => {
     setMenuOpen(false);
@@ -13,15 +19,22 @@ export const Nav = () => {
   return (
     <nav className={'navbar bg-inherit h-20 fixed top-0 z-50  shadow-md '}>
       <div className={'navbar-start'}>
-        <label
-          tabIndex={0}
-          className='btn btn-ghost btn-circle'
-          onClick={() => setMenuOpen(!menuOpen)}
-          onBlur={close}
-        >
-          <FiMenu className='fill-primary' size='20' />
-        </label>
-        <ul
+        {pathname === '/' ? (
+          <label
+            tabIndex={0}
+            className='btn btn-ghost btn-circle'
+            onClick={() => setMenuOpen(!menuOpen)}
+            onBlur={close}
+          >
+            <FiMenu className='fill-primary' size='20' />
+          </label>
+        ) : (
+          <CircleButton className='w-12 h-12' onClick={() => router.back()}>
+            <FaArrowLeft />
+          </CircleButton>
+        )}
+
+        {/* <ul
           tabIndex={1}
           className={`${
             menuOpen ? '' : 'hidden'
@@ -36,7 +49,7 @@ export const Nav = () => {
           <li>
             <a href={'/api/bewoners'}>Bewoner api</a>
           </li>
-        </ul>
+        </ul> */}
       </div>
       <div className='navbar-center'>
         <Link
