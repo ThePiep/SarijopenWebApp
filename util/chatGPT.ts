@@ -27,36 +27,40 @@ const processChatGPTArtikel = (text: string): ChatGPTArtikelType => {
   return { titel, inhoud };
 };
 
-export const getChatGPTArtikel =
-  async (): Promise<ChatGPTArtikelType | null> => {
-    const cached = await chatGPTArtikelCache.get('chatGPTArtikelString');
-    if (cached) {
-      console.log('GPT Artikel cache hit');
-      return processChatGPTArtikel(cached);
-    } else {
-      const res = await getChatFreshGPTArtikel();
-      if (!res.ok) {
-        return null;
-      }
-
-      const json = await res.json();
-      let text = json.choices[0].text as string;
-      console.log('Caching chatGPT artikel for 24 hours');
-      chatGPTArtikelCache.put(
-        'chatGPTArtikelString',
-        text + ' - from cache - ' + dayjs().format('HH:mm'),
-        1000 * 60 * 60 * 24
-      ); // cache for 24 hours
-
-      const result = processChatGPTArtikel(text);
-
-      if (result.inhoud === 'failed') {
-        console.log('failed bij nieuwe call');
-      }
-
-      return result;
+export const getChatGPTArtikel = async (): Promise<
+  ChatGPTArtikelType | undefined
+> => {
+  const cached = await chatGPTArtikelCache.get('chatGPTArtikelString');
+  if (cached) {
+    console.log('GPT Artikel cache hit');
+    return processChatGPTArtikel(cached);
+  } else {
+    const res = await getChatFreshGPTArtikel();
+    if (!res.ok) {
+      return undefined;
     }
-  };
+
+    const json = await res.json();
+    let text = json.choices?.[0]?.text as string;
+    if (!text) {
+      return undefined;
+    }
+    console.log('Caching chatGPT artikel for 24 hours');
+    chatGPTArtikelCache.put(
+      'chatGPTArtikelString',
+      text + ' - from cache - ' + dayjs().format('HH:mm'),
+      1000 * 60 * 60 * 24
+    ); // cache for 24 hours
+
+    const result = processChatGPTArtikel(text);
+
+    if (result.inhoud === 'failed') {
+      console.log('failed bij nieuwe call');
+    }
+
+    return result;
+  }
+};
 
 export const getChatFreshGPTArtikel = async () => {
   console.log('ASKING CHATGPT!');
@@ -79,10 +83,12 @@ export const getChatFreshGPTArtikel = async () => {
     body: raw,
   };
 
-  const res = await fetch(
-    'https://api.openai.com/v1/completions',
-    requestOptions
-  );
+  // const res = await fetch(
+  //   // 'https://api.openai.com/v1/completions',
+  //   'https://openai-mock.com',
+  //   requestOptions
+  // );
+  const res = new Response(undefined, { status: 400, statusText: 'failed' });
 
   return res;
 };

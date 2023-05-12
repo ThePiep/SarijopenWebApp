@@ -23,7 +23,7 @@ export default function RootLayout({
       <title>{metadata.title}</title>
 
       <link rel='manifest' href='/manifest.json' />
-      <body className='bg-orange-50 min-h-screen'>
+      <body className='bg-orange-50 min-h-screen font-gooper'>
         <SessionProvider>
           <IconContext.Provider
             value={{ color: 'black', className: 'global-class-name' }}

@@ -1,12 +1,13 @@
-"use client";
-import { Spinner } from "@/components/Spinner";
-import { useSession, signIn, signOut } from "next-auth/react";
+'use client';
+import { LinkButton } from '@/components/Button/LinkButton';
+import { Spinner } from '@/components/Spinner';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function LoginButton() {
   const { data: session, status } = useSession();
-  if (status === "loading") {
+  if (status === 'loading') {
     return (
-      <button disabled className="btn-primary btn-sm ">
+      <button disabled className='btn-primary btn-sm '>
         <Spinner />
       </button>
     );
@@ -14,18 +15,28 @@ export default function LoginButton() {
   if (session) {
     return (
       <>
-        <a className="btn normal-case ">{session.user?.name}</a>
-        <button className={"btn  btn-sm "} onClick={() => signOut()}>
-          Sign out
-        </button>
+        <div className='text-black h-6 font-semibold pr-2'>
+          {session.user.naam} -
+        </div>
+        <LinkButton
+          color='black'
+          className={' h-8 px-4'}
+          onClick={() => signOut()}
+        >
+          Uitloggen
+        </LinkButton>
       </>
     );
   }
   return (
     <>
-      <button className={" btn "} onClick={() => signIn()}>
-        Sign in
-      </button>
+      <LinkButton
+        color='black'
+        className={'text-black h-6'}
+        onClick={() => signIn()}
+      >
+        Inloggen
+      </LinkButton>
     </>
   );
 }
