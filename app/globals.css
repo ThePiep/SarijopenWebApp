@@ -6,3 +6,165 @@
   font-family: 'KellyAnnGothic';
   src: url('/fonts/KellyAnnGothic/KellyAnnGothic.ttf');
 }
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-BlackItalic.eot');
+  src: local('Gooper Black Italic'), local('Gooper-BlackItalic'),
+    url('/fonts/gooper/Gooper-BlackItalic.eot?#iefix')
+      format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-BlackItalic.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-BlackItalic.woff') format('woff'),
+    url('/fonts/gooper/Gooper-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-SemiBoldItalic.eot');
+  src: local('Gooper SemiBold Italic'), local('Gooper-SemiBoldItalic'),
+    url('/fonts/gooper/Gooper-SemiBoldItalic.eot?#iefix')
+      format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-SemiBoldItalic.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-SemiBoldItalic.woff') format('woff'),
+    url('/fonts/gooper/Gooper-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-ThinItalic.eot');
+  src: local('Gooper Thin Italic'), local('Gooper-ThinItalic'),
+    url('/fonts/gooper/Gooper-ThinItalic.eot?#iefix')
+      format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-ThinItalic.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-ThinItalic.woff') format('woff'),
+    url('/fonts/gooper/Gooper-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-BoldItalic.eot');
+  src: local('Gooper Bold Italic'), local('Gooper-BoldItalic'),
+    url('/fonts/gooper/Gooper-BoldItalic.eot?#iefix')
+      format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-BoldItalic.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-BoldItalic.woff') format('woff'),
+    url('/fonts/gooper/Gooper-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-SemiBold.eot');
+  src: local('Gooper SemiBold'), local('Gooper-SemiBold'),
+    url('/fonts/gooper/Gooper-SemiBold.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-SemiBold.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-SemiBold.woff') format('woff'),
+    url('/fonts/gooper/Gooper-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-Thin.eot');
+  src: local('Gooper Thin'), local('Gooper-Thin'),
+    url('/fonts/gooper/Gooper-Thin.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-Thin.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-Thin.woff') format('woff'),
+    url('/fonts/gooper/Gooper-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-Black.eot');
+  src: local('Gooper Black'), local('Gooper-Black'),
+    url('/fonts/gooper/Gooper-Black.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-Black.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-Black.woff') format('woff'),
+    url('/fonts/gooper/Gooper-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-Bold.eot');
+  src: local('Gooper Bold'), local('Gooper-Bold'),
+    url('/fonts/gooper/Gooper-Bold.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-Bold.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-Bold.woff') format('woff'),
+    url('/fonts/gooper/Gooper-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-Light.eot');
+  src: local('Gooper Light'), local('Gooper-Light'),
+    url('/fonts/gooper/Gooper-Light.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-Light.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-Light.woff') format('woff'),
+    url('/fonts/gooper/Gooper-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-Regular.eot');
+  src: local('Gooper Regular'), local('Gooper-Regular'),
+    url('/fonts/gooper/Gooper-Regular.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-Regular.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-Regular.woff') format('woff'),
+    url('/fonts/gooper/Gooper-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-LightItalic.eot');
+  src: local('Gooper Light Italic'), local('Gooper-LightItalic'),
+    url('/fonts/gooper/Gooper-LightItalic.eot?#iefix')
+      format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-LightItalic.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-LightItalic.woff') format('woff'),
+    url('/fonts/gooper/Gooper-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gooper';
+  src: url('/fonts/gooper/Gooper-RegularItalic.eot');
+  src: local('Gooper Regular Italic'), local('Gooper-RegularItalic'),
+    url('/fonts/gooper/Gooper-RegularItalic.eot?#iefix')
+      format('embedded-opentype'),
+    url('/fonts/gooper/Gooper-RegularItalic.woff2') format('woff2'),
+    url('/fonts/gooper/Gooper-RegularItalic.woff') format('woff'),
+    url('/fonts/gooper/Gooper-RegularItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
