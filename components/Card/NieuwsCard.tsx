@@ -1,14 +1,15 @@
 export const revalidate = 600;
 
-import { getChatGPTArtikel } from '@/util/chatGPT';
+import { ChatGPTArtikelType, getChatGPTArtikel } from '@/util/chatGPT';
 import { Card, CardProps } from './Card';
 import { generateRssFeed } from '@/util/generateRSSFeed';
 
 interface Props extends Omit<CardProps, 'title'> {}
 
 export const NieuwsCard = async ({ ...props }: Props) => {
-  const chatGPTArtikel = await getChatGPTArtikel();
-  await generateRssFeed();
+  // const chatGPTArtikel = await getChatGPTArtikel();
+  // await generateRssFeed();
+  const chatGPTArtikel: ChatGPTArtikelType | undefined = undefined;
 
   return (
     <Card title={chatGPTArtikel?.titel ?? 'Nieuws'} {...props}>
