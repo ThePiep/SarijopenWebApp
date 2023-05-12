@@ -1,3 +1,7 @@
+import {
+  getKookploegGebruikerIdByName,
+  getKookploegVoorkeurByGebruikerId,
+} from '@/util/kookploeg';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -12,6 +16,12 @@ interface LoginResponse {
 export const authOptions: NextAuthOptions = {
   // https://authjs.dev/reference/providers/
   secret: process.env.NEXTAUTH_SECRET,
+  theme: {
+    // colorScheme: 'light',
+    brandColor: '#1E90FF',
+    logo: '/img/titel.gif',
+    buttonText: '#FF0000',
+  },
   providers: [
     CredentialsProvider({
       id: '1',
@@ -49,7 +59,6 @@ export const authOptions: NextAuthOptions = {
           `${process.env.SARIJOPEN_URL}/flatpage/controller/login.php`,
           {
             method: 'POST',
-            // headers: formData.getHeaders(),
             body: data,
           }
         );
@@ -63,10 +72,22 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
           if (obj.success && obj.userId !== undefined) {
+            const kookploeg_gebruiker_id = await getKookploegGebruikerIdByName(
+              credentials.username
+            );
+            let kookploeg_id = null;
+
+            if (kookploeg_gebruiker_id) {
+              kookploeg_id = await getKookploegVoorkeurByGebruikerId(
+                kookploeg_gebruiker_id
+              );
+            }
             return {
               id: obj.userId.toString(),
               name: credentials.username,
-              email: 'jsmight@example.com',
+              naam: credentials.username,
+              kookploeg_voorkeur_id: kookploeg_id,
+              kookploeg_gebruiker_id: kookploeg_gebruiker_id ?? null,
             };
           } else {
             // userId is unexpectedly undefined
@@ -80,6 +101,24 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    session({ session, token }) {
+      if (token.name && session.user) {
+        session.user.naam = token.name;
+        session.user.kookploeg_voorkeur_id = token.kookploeg_voorkeur_id;
+        session.user.kookploeg_gebruiker_id = token.kookploeg_gebruiker_id;
+      }
+      return session;
+    },
+    jwt({ token, trigger, session, user }) {
+      if (user) {
+        token.naam = user.naam;
+        token.kookploeg_voorkeur_id = user.kookploeg_voorkeur_id;
+        token.kookploeg_gebruiker_id = user.kookploeg_gebruiker_id;
+      }
+      return token;
+    },
+  },
 };
 
 export default NextAuth(authOptions);
