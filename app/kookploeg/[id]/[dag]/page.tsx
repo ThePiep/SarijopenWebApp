@@ -1,4 +1,4 @@
-revalidate: 60;
+revalidate: 1;
 
 import { LinkButton } from '@/components/Button/LinkButton';
 import { KPCard, KookploegId, revalidate } from '@/components/Card/KPCard';
@@ -53,6 +53,7 @@ export default function Page({ params }: Props) {
       <div className='flex justify-between'>
         <LinkButton>
           <Link
+            prefetch={false}
             href={`/kookploeg/${kookploegId}/${prevDay.format('YYYY-MM-DD')}`}
           >
             {prevDay.calendar()}
@@ -61,6 +62,7 @@ export default function Page({ params }: Props) {
         <LinkButton>{dag.calendar()}</LinkButton>
         <LinkButton>
           <Link
+            prefetch={false}
             href={`/kookploeg/${kookploegId}/${nextDay.format('YYYY-MM-DD')}`}
           >
             {nextDay.calendar()}

@@ -11,7 +11,6 @@ import { FaArrowDown, FaArrowUp } from 'react-icons/fa';
 import { LinkButton } from '../Button/LinkButton';
 import {
   addKok,
-  gastIntekenen,
   intekenen,
   removeKok,
   startMoment,

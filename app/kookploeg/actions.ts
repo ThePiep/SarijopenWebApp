@@ -54,5 +54,5 @@ export async function uittekenen(
 
 export const revalidateKookploeg = async (kookploeg_id: KookploegId) => {
   revalidatePath('');
-  revalidatePath(`kookploeg/${kookploeg_id}`);
+  revalidatePath(`kookploeg/${kookploeg_id}/[dag]`);
 };

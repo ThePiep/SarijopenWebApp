@@ -88,13 +88,11 @@ export const KPCard = async ({
                       : 'text-gray-200'
                   } mr-0.5 `}
                 >
-                  {`${eter.naam}${
-                    eter.isVoorspeldeKok ||
-                    eter.isVoorspeldeAfwas1 ||
-                    eter.isVoorspeldeAfwas2
-                      ? '!?'
-                      : ''
-                  }`}
+                  {(eter.isVoorspeldeKok && !eter.isKok) ||
+                  (eter.isVoorspeldeAfwas1 && !eter.isAfwas1) ||
+                  (eter.isVoorspeldeAfwas2 && !eter.isAfwas2)
+                    ? `(${eter.naam})?`
+                    : `${eter.naam}`}
                   {eter.isKok && <TbChefHat className='ml-0.5' />}
                   {(eter.isAfwas1 || eter.isAfwas2) && (
                     <GiSoap className='ml-1' />
@@ -118,27 +116,28 @@ export const KPCard = async ({
         </div>
       </div>
 
-      <p className={'overflow-auto'}>
-        {JSON.stringify({
-          kok: kok?.naam,
-          voorspeldeKok: voorspeldeKok?.naam,
-          voorspeldeReserveKok: voorspeldeReserveKok?.naam,
-          afwas1: afwas1?.naam,
-          voorspeldeAfwas1: voorspeldeAfwas1?.naam,
-          afwas2: afwas2?.naam,
-          voorspeldeAfwas2: voorspeldeAfwas2?.naam,
-          voorspeldeReserveAfwas: voorspeldeReserveAfwas?.naam,
-        })}
-      </p>
-
       {showDetails && (
-        <KPCardActions
-          kok={kok}
-          eters={eters}
-          moment={moment}
-          kookploeg_id={kookploeg}
-          day_string={datum.format('YYYY-MM-DD')}
-        />
+        <>
+          <p className={'overflow-auto'}>
+            {JSON.stringify({
+              kok: kok?.naam,
+              voorspeldeKok: voorspeldeKok?.naam,
+              voorspeldeReserveKok: voorspeldeReserveKok?.naam,
+              afwas1: afwas1?.naam,
+              voorspeldeAfwas1: voorspeldeAfwas1?.naam,
+              afwas2: afwas2?.naam,
+              voorspeldeAfwas2: voorspeldeAfwas2?.naam,
+              voorspeldeReserveAfwas: voorspeldeReserveAfwas?.naam,
+            })}
+          </p>
+          <KPCardActions
+            kok={kok}
+            eters={eters}
+            moment={moment}
+            kookploeg_id={kookploeg}
+            day_string={datum.format('YYYY-MM-DD')}
+          />
+        </>
       )}
     </Card>
   );
