@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require('tailwindcss/colors');
-module.exports = {
+
+const tailwindConfig = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
@@ -15,6 +15,7 @@ module.exports = {
       },
       fontFamily: {
         kelly: ['KellyAnnGothic'],
+        gooper: ['Gooper'],
       },
       fontSize: {
         '2xs': '0.625rem',
@@ -98,3 +99,5 @@ module.exports = {
   },
   plugins: [require('daisyui')],
 };
+
+module.exports = tailwindConfig;

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[Blog posts | RSS Feed]]></title>
+        <description><![CDATA[Welcome to this blog posts!]]></description>
+        <link>http://localhost:3000</link>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Sat, 06 May 2023 21:23:24 GMT</lastBuildDate>
+        <atom:link href="http://localhost:3000/rss.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Sat, 06 May 2023 21:23:22 GMT</pubDate>
+        <copyright><![CDATA[All rights reserved 2023, Ibas]]></copyright>
+        <item>
+            <title><![CDATA[failed]]></title>
+            <description><![CDATA[undefined - from cache - 23:22]]></description>
+            <link>http://localhost:3000/quotes</link>
+            <guid isPermaLink="true">http://localhost:3000/quotes</guid>
+            <pubDate>Sat, 06 May 2023 21:23:24 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
