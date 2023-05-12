@@ -1,75 +1,53 @@
 'use client';
+import { isUndefined } from 'lodash';
+import Link from 'next/link';
 import { IconType } from 'react-icons';
-
+import colors from 'tailwindcss/colors';
 export interface CardProps {
   title: string;
   children?: React.ReactNode;
-  colSpan?: keyof typeof spanMap;
-  colSpanMd?: keyof typeof spanMap;
-  colSpanXl?: keyof typeof spanMap;
-  color?: keyof typeof colorMap;
+  color?: 'bg-pocean-50' | 'bg-porange-100' | 'bg-pgreen-100' | 'bg-pblue-100';
   titleIcon?: JSX.Element;
+  href?: React.ComponentProps<typeof Link>['href'];
+  className?: React.ComponentProps<'div'>['className'];
+  lockHeight?: boolean;
 }
 
-enum colorMap {
-  red = 'bg-pocean-50',
-  orange = 'bg-porange-100',
-  yellow = 'bg-pgreen-100',
-  green = 'bg-pgreen-100',
-  blue = 'bg-pblue-100',
-  purple = 'bg-pocean-50',
-  pink = 'bg-pblue-100',
+interface LinkWrapperProps {
+  href?: CardProps['href'];
+  children: JSX.Element;
 }
-
-// enum spanMap {
-//   'col-span-1' = 1,
-//   'col-span-2' = 2
-// }
-
-const spanMap = {
-  1: 'col-span-1',
-  2: 'col-span-2',
-  3: 'col-span-3',
-  4: 'col-span-4',
-  5: 'col-span-5',
-  6: 'col-span-6',
-  7: 'col-span-7',
-  8: 'col-span-8',
-  9: 'col-span-9',
-  10: 'col-span-10',
-  11: 'col-span-11',
-  // 12: 'col-span-12',
-  12: 'col-span-full',
+const LinkWrapper = ({ href, children }: LinkWrapperProps): JSX.Element => {
+  return isUndefined(href) ? children : <Link href={href}>{children}</Link>;
 };
 
 export const Card = ({
   children,
-  colSpan,
-  colSpanMd,
-  colSpanXl,
-  color,
   title,
   titleIcon,
+  href,
+  color,
+  className,
+  lockHeight = true,
 }: CardProps) => {
-  const c = colorMap[color ?? 'red'];
   return (
     <div
       className={`card rounded-md border-gray-500 border-2 border-b-5 border-r-5 
-      h-44 overflow-hidden
-      ${colorMap[color ?? 'red']}
-      ${spanMap[colSpan ?? 1]} 
-      ${colSpanMd ? `md:${spanMap[colSpanMd]}` : ''}
-      ${colSpanXl ? `xl:${spanMap[colSpanXl]}` : ''}
+      ${lockHeight ? 'h-44' : ''} overflow-hidden
+      ${className}
+      ${color ?? 'bg-porange-100'}
       `}
+      color={colors.amber[100]}
     >
-      <div className='card-body p-4'>
-        <h2 className='card-title border-b-2 border-slate-800'>
-          {title}
-          <span className='mr-0 ml-auto'>{titleIcon} </span>
-        </h2>
-        {/* <div className='mb-2 max-h-max'>{children}</div> */}
-        {children}
-      </div>
+      <LinkWrapper href={href}>
+        <div className='card-body p-4'>
+          <h2 className='card-title border-b-2 border-slate-800'>
+            {title}
+            <span className='mr-0 ml-auto'>{titleIcon} </span>
+          </h2>
+          {children}
+        </div>
+      </LinkWrapper>
     </div>
   );
 };

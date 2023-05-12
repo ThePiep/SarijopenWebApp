@@ -1,42 +1,38 @@
+// 'use client';
+// Dit moet uiteindelijk weer een server component worden
 import { ExampleCard } from '@/components/Card/ExampleCard';
 import { KPCard } from '@/components/Card/KPCard';
 import { NieuwsCard } from '@/components/Card/NieuwsCard';
 import { QuotesCard } from '@/components/Card/QuotesCard';
+import { extendedColors } from '@/lib/tailwind-types';
 import dayjs from 'dayjs';
-import { useState } from 'react';
 
 export default function HomePage() {
   const experimenteel = true;
   const kookploegRender = () => {
-    const day = dayjs().subtract(30, 'days').day();
-    const isWeekend = day === 0 || day === 5 || day === 6;
+    const weekendDays = [0, 5, 6];
+    const isWeekend = weekendDays.includes(dayjs().subtract(30, 'days').day());
     const gebruikerKP: number = 1; //TODO: get from db
     const cool = (
       <KPCard
-        colSpan={
-          !isWeekend
-            ? // && gebruikerKP === 1
-              2
-            : 1
-        }
-        color='orange'
+        className={`${isWeekend ? 'col-span-1' : 'col-span-2'} `}
+        color='bg-porange-100'
         kookploeg={1}
       />
     );
     const hot = (
       <KPCard
-        colSpan={
-          !isWeekend
-            ? // && gebruikerKP === 2
-              2
-            : 1
-        }
-        color='orange'
+        className={`${isWeekend ? 'col-span-1' : 'col-span-2'} `}
+        color='bg-porange-100'
         kookploeg={2}
       />
     );
     const wk = (
-      <KPCard colSpan={isWeekend ? 2 : 1} color='orange' kookploeg={3} />
+      <KPCard
+        className={`${isWeekend ? 'col-span-2' : 'col-span-1'} `}
+        color='bg-porange-100'
+        kookploeg={3}
+      />
     );
     if (isWeekend)
       return (
@@ -70,51 +66,74 @@ export default function HomePage() {
     <main className='text-slate-900 '>
       <div className='grid grid-flow-row-dense grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6'>
         {kookploegRender()}
-        <NieuwsCard colSpan={12} colSpanMd={4} colSpanXl={6} />
-        {experimenteel && (
-          <>
-            <ExampleCard colSpan={1} title={'Voorbeeld'} color='green' />
-            <ExampleCard colSpan={1} title={'Voorbeeld'} color='blue' />
-            <ExampleCard colSpan={1} title={'Voorbeeld'} color='purple' />
-          </>
-        )}
-        <QuotesCard colSpan={1} color='pink' />
+        <NieuwsCard
+          className='col-span-2 md:col-span-4 xl:col-span-6 '
+          color='bg-pgreen-100'
+        />
         {experimenteel && (
           <>
             <ExampleCard
-              colSpan={2}
+              className='col-span-1 '
+              color='bg-pgreen-100'
+              title={'Voorbeeld'}
+            />
+            <ExampleCard
+              className='col-span-1 '
+              color='bg-pblue-100'
+              title={'Voorbeeld'}
+            />
+            <ExampleCard
+              className='col-span-1 '
+              color='bg-pgreen-100'
+              title={'Voorbeeld'}
+            />
+          </>
+        )}
+        <QuotesCard color='bg-pblue-100' className='col-span-1 ' />
+        {experimenteel && (
+          <>
+            <ExampleCard
+              className='col-span-2 '
+              color='bg-pocean-50'
               title={'Uitgelichte bewoner'}
-              color='purple'
               text='Bewoner foto + verhaaltje'
             />
             <ExampleCard
-              colSpan={2}
+              className='col-span-2 '
+              color='bg-pocean-50'
               title={'Het Weer'}
               text={
                 'Beschrijving van het weer (misschien met die leipe plaatjes van de originele website'
               }
-              color='red'
             />
             <ExampleCard
-              colSpan={1}
+              className='col-span-1 '
+              color='bg-porange-100'
               title={'Random Jopen'}
               text={'Je weet wel wat ik bedoel'}
-              color='orange'
             />
             <ExampleCard
-              colSpan={2}
+              className='col-span-2 '
+              color='bg-pgreen-100'
               title={'Bierlijst'}
               text='Link naar bierlijst'
-              color='yellow'
             />
             <ExampleCard
-              colSpan={1}
+              className='col-span-1 '
+              color='bg-porange-100'
               title={'Foto album'}
               text='Random foto uit fotoalbum (link naar google photos(?))'
-              color='orange'
             />
-            <ExampleCard colSpan={2} title={'Voorbeeld'} color='blue' />
-            <ExampleCard colSpan={1} title={'Voorbeeld'} color='orange' />
+            <ExampleCard
+              className='col-span-2 '
+              color='bg-pblue-100'
+              title={'Voorbeeld'}
+            />
+            <ExampleCard
+              className='col-span-1 '
+              color='bg-porange-100'
+              title={'Voorbeeld'}
+            />
           </>
         )}
       </div>
