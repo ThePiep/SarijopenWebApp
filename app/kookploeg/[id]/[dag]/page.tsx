@@ -1,4 +1,4 @@
-revalidate: 1;
+revalidate: 10;
 
 import { LinkButton } from '@/components/Button/LinkButton';
 import { KPCard, KookploegId, revalidate } from '@/components/Card/KPCard';

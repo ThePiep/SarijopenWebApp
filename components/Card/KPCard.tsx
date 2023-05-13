@@ -46,6 +46,8 @@ export const KPCard = async ({
   const { moment, eters } =
     (await getKookploegMomentEnEters(kookploeg, datum)) || {};
 
+  const vandaag = dayjs();
+
   const kok = eters?.find((e) => e.isKok);
   const voorspeldeKok = eters?.find((e) => e.isVoorspeldeKok);
   const voorspeldeReserveKok = eters?.find((e) => e.isVoorspeldeReserveKok);
@@ -54,15 +56,17 @@ export const KPCard = async ({
   const afwas2 = eters?.find((e) => e.isAfwas2);
   const voorspeldeAfwas2 = eters?.find((e) => e.isVoorspeldeAfwas2);
   const voorspeldeReserveAfwas = eters?.find((e) => e.isVoorspeldeReserveAfwas);
-  const restEters = eters?.filter(
-    (e) => !e.isKok && !e.isAfwas1 && !e.isAfwas2
-  );
+
+  const geslotenOfTeLaat =
+    (moment && moment.Gesloten) ||
+    datum.isBefore(vandaag, 'day') ||
+    (datum.isSame(vandaag, 'day') && datum.isAfter(vandaag.set('h', 14), 'h'));
 
   return (
     <Card
       {...props}
       title={kookploegRecord[kookploeg]}
-      titleIcon={moment && moment.Gesloten ? <RxLockClosed /> : <RxLockOpen1 />}
+      titleIcon={geslotenOfTeLaat ? <RxLockClosed /> : <RxLockOpen1 />}
       lockHeight={!showDetails}
       href={
         showDetails
@@ -94,9 +98,10 @@ export const KPCard = async ({
                     ? `(${eter.naam})?`
                     : `${eter.naam}`}
                   {eter.isKok && <TbChefHat className='ml-0.5' />}
-                  {(eter.isAfwas1 || eter.isAfwas2) && (
-                    <GiSoap className='ml-1' />
-                  )}
+                  {(eter.isAfwas1 ||
+                    eter.isAfwas2 ||
+                    eter.isVoorspeldeAfwas1 ||
+                    eter.isVoorspeldeAfwas2) && <GiSoap className='ml-1' />}
                 </div>
               ))
             ) : (
@@ -105,9 +110,8 @@ export const KPCard = async ({
           </div>
         )}
         <div
-          className={`grid grid-cols-1 place-items-center align-middle justify-center mt-4 mb-4 h-16 ${
-            showExtra ? ' mr-4' : 'flex-grow'
-          }`}
+          className={`grid grid-cols-1 place-items-center align-middle justify-center m-4 h-16 
+          `}
         >
           <div className='stat-value text-secondary'>
             {eters ? eters.length : 0}

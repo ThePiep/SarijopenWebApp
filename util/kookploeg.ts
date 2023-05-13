@@ -9,8 +9,7 @@ import {
 import dayjs, { Dayjs } from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { isNil, isNull, isUndefined } from 'lodash';
-import { Op, Sequelize } from 'sequelize';
+import { isNil } from 'lodash';
 import { getVoorspellingMoment } from './kookploeg-voorspellingen';
 
 dayjs.extend(isBetween);

@@ -4,6 +4,7 @@ import sequelize from '@/lib/sequelize';
 import dayjs from 'dayjs';
 import { Op } from 'sequelize';
 import { isUndefined } from 'lodash';
+import { getKookploegEters } from './kookploeg';
 
 const DAGEN_VOORUIT = 5; // Op dit moment kijken KP Cool, KP Hot en KP Weekend allemaal 5 dagen vooruit.
 const SALDO_KPS = [3]; // TODO: get from db, voor nu Weekend KP
@@ -21,6 +22,7 @@ export const getVoorspellingMoment = async (
   reserveAfwas: number | null;
 } | null> => {
   kookploeg_momenten.initModel(sequelize);
+  kookploeg_eters.initModel(sequelize);
   const moment = await kookploeg_momenten.findOne({
     where: { ID: momentID },
   });
@@ -42,16 +44,8 @@ export const getVoorspellingMoment = async (
     return null;
   }
 
-  kookploeg_eters.initModel(sequelize);
-
   // Eters voor dit specifieke moment
-  const eters = (
-    await kookploeg_eters.findAll({
-      where: {
-        MomentID: moment.ID,
-      },
-    })
-  ).filter(
+  const eters = (await getKookploegEters(momentID)).filter(
     // Filter away any duplicates
     (eter, index, array) =>
       array.findIndex((e) => e.GebruikerID === eter.GebruikerID) === index
@@ -113,14 +107,14 @@ export const getVoorspellingMoment = async (
   }
 
   if (SALDO_KPS.includes(moment.KookploegID) && !isUndefined(inschrijvingen)) {
-    console.time('stap2: laatst gekookt');
+    console.time('stapA: laagste kooksaldo');
     const laagsteKookSaldo = berekenKookSaldos(eters, momenten, inschrijvingen);
-    console.timeLog('stap2: laatst gekookt');
-    console.timeEnd('stap2: laatst gekookt');
-    console.time('stap3: laatst afgewassen');
+    console.timeLog('stapA: laagste kooksaldo');
+    console.timeEnd('stapA: laagste kooksaldo');
+    console.time('stapB: laatst afgewassen');
     const laatstAfgewassen = berekenAfwasVolgorde(eters, momenten);
-    console.timeLog('stap3: laatst afgewassen');
-    console.timeEnd('stap3: laatst afgewassen');
+    console.timeLog('stapB: laatst afgewassen');
+    console.timeEnd('stapB: laatst afgewassen');
 
     return berekenKokEnAfwas(moment, laagsteKookSaldo, laatstAfgewassen);
   } // TODO: Saldo implementatie
@@ -206,18 +200,33 @@ const berekenKookSaldos = (
   alleInschrijvingen: kookploeg_eters[]
 ): { id: number; saldo: number }[] => {
   console.time('Kooksaldo berekening');
-  console.time('stap1: relevanteInschrijvingen');
   // Dit kan veel sneller met een joint query...
-  // Waarschijnlijk ook mooi op te lossen met een new Map voor momenten
+
+  const vandaag = dayjs();
+  const vandaagString = vandaag.format('YYYY-MM-DD');
+
+  console.time('stap0: momentenMap');
+  let momentenMap = new Map();
+  for (let i = 0; i < momenten.length; i++) {
+    momentenMap.set(momenten[i].ID, momenten[i]);
+  }
+  console.timeLog('stap0: momentenMap');
+  console.timeEnd('stap0: momentenMap');
+
+  console.time('stap0: momentenSet');
+  let momentIdSet = new Set();
+  for (let i = 0; i < momenten.length; i++) {
+    momentIdSet.add(momenten[i].ID);
+  }
+  console.timeLog('stap0: momentenSet');
+  console.timeEnd('stap0: momentenSet');
+
+  console.time('stap1: relevanteInschrijvingen');
   let relevanteInschrijvingen: kookploeg_eters[] = [];
   for (let i = 0; i < alleInschrijvingen.length; i++) {
     const ins = alleInschrijvingen[i];
-    for (let j = 0; j < momenten.length; j++) {
-      const m = momenten[j];
-      if (m.ID === ins.MomentID) {
-        relevanteInschrijvingen.push(ins);
-        break;
-      }
+    if (momentIdSet.has(ins.MomentID)) {
+      relevanteInschrijvingen.push(ins);
     }
   }
   console.timeLog('stap1: relevanteInschrijvingen');
@@ -229,9 +238,7 @@ const berekenKookSaldos = (
         return (
           acc +
           (k.GebruikerID === e.GebruikerID &&
-          dayjs(
-            momenten.find((m) => m.ID === k.MomentID)?.Datum
-          ).isSameOrBefore(dayjs(), 'day')
+          momentenMap.get(k.MomentID)?.Datum <= vandaag
             ? 1
             : 0)
         );
@@ -241,25 +248,15 @@ const berekenKookSaldos = (
       console.time('stap3: kookPunten');
       // Dit is het langzaamste stukje code, vandaar de for loop ipv .map() .filter() etc...
       let kookPunten = 0;
-      for (let i = 0; i < momenten.length; i++) {
-        const m = momenten[i];
-        if (m.Kok === e.GebruikerID) {
-          for (let j = 0; j < relevanteInschrijvingen.length; j++) {
-            const ins = relevanteInschrijvingen[j];
-            if (ins.MomentID === m.ID) {
-              kookPunten++;
-            }
-          }
+      for (let i = 0; i < relevanteInschrijvingen.length; i++) {
+        const ins = relevanteInschrijvingen[i];
+        if (momentenMap.get(ins.MomentID)?.Kok === e.GebruikerID) {
+          kookPunten++;
         }
       }
+
       console.timeLog('stap3: kookPunten');
       console.timeEnd('stap3: kookPunten');
-      // console.log({
-      //   id: e.GebruikerID,
-      //   kookPunten,
-      //   keerMeegegeten,
-      //   saldo: kookPunten - keerMeegegeten,
-      // });
       return { id: e.GebruikerID, saldo: kookPunten - keerMeegegeten };
     })
     .sort((a, b) => (a.saldo > b.saldo ? 1 : -1));
