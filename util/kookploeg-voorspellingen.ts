@@ -51,7 +51,6 @@ export const getVoorspellingMoment = async (
       array.findIndex((e) => e.GebruikerID === eter.GebruikerID) === index
   );
 
-  console.time('Momenten ophalen');
   let momenten =
     _momenten ??
     (await kookploeg_momenten.findAll({
@@ -65,11 +64,9 @@ export const getVoorspellingMoment = async (
       raw: true,
     }));
 
-  console.timeLog('Momenten ophalen');
-  console.timeEnd('Momenten ophalen');
-
-  let inschrijvingen: kookploeg_eters[] | undefined = undefined;
-  if (SALDO_KPS.includes(moment.KookploegID) && !_inschrijvingen) {
+  console.time('Inschrijvingen ophalen');
+  let inschrijvingen: kookploeg_eters[] | undefined = _inschrijvingen;
+  if (SALDO_KPS.includes(moment.KookploegID) && !inschrijvingen) {
     inschrijvingen = await kookploeg_eters.findAll({
       where: {
         // Tijdstempel: { [Op.gt]: '2012-09-13 00:00:00' },
@@ -78,6 +75,8 @@ export const getVoorspellingMoment = async (
       raw: true,
     });
   }
+  console.timeLog('Inschrijvingen ophalen');
+  console.timeEnd('Inschrijvingen ophalen');
 
   if (!_momenten) {
     const voorspellingsMomenten = momenten
@@ -107,14 +106,8 @@ export const getVoorspellingMoment = async (
   }
 
   if (SALDO_KPS.includes(moment.KookploegID) && !isUndefined(inschrijvingen)) {
-    console.time('stapA: laagste kooksaldo');
     const laagsteKookSaldo = berekenKookSaldos(eters, momenten, inschrijvingen);
-    console.timeLog('stapA: laagste kooksaldo');
-    console.timeEnd('stapA: laagste kooksaldo');
-    console.time('stapB: laatst afgewassen');
     const laatstAfgewassen = berekenAfwasVolgorde(eters, momenten);
-    console.timeLog('stapB: laatst afgewassen');
-    console.timeEnd('stapB: laatst afgewassen');
 
     return berekenKokEnAfwas(moment, laagsteKookSaldo, laatstAfgewassen);
   } // TODO: Saldo implementatie
