@@ -12,17 +12,17 @@ export const NavMenu = () => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const pathname = usePathname();
   return pathname === '/' ? (
-    <label
+    <CircleButton
       tabIndex={0}
       className='btn btn-ghost btn-circle'
       onClick={() => setMenuOpen(!menuOpen)}
       onBlur={() => setMenuOpen(false)}
     >
-      <FiMenu className='fill-primary' size='20' />
-    </label>
+      <FiMenu size='20' />
+    </CircleButton>
   ) : (
     <Link href='/'>
-      <CircleButton className='w-12 h-12'>
+      <CircleButton>
         <FaArrowLeft />
       </CircleButton>
     </Link>

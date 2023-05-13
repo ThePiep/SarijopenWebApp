@@ -59,7 +59,6 @@ export default function Page({ params }: Props) {
             {prevDay.calendar()}
           </Link>
         </LinkButton>
-        <LinkButton>{dag.calendar()}</LinkButton>
         <LinkButton>
           <Link
             prefetch={false}

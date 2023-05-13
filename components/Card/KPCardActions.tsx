@@ -21,6 +21,7 @@ import { KookploegId } from './KPCard';
 import { CircleButton } from '../Button/CircleButton';
 import dayjs, { Dayjs } from 'dayjs';
 import { User } from 'next-auth';
+import { LeftMiddleRight } from './LeftMiddleRight';
 
 interface Props {
   kok?: KookploegMomentEter;
@@ -49,7 +50,7 @@ export const KPCardActions = ({
       eters &&
       !!eters.find((e) => e.GebruikerID === gebruiker?.kookploeg_gebruiker_id)
     );
-  }, [eters]);
+  }, [eters, gebruiker]);
 
   const expandedButtons = [
     {
@@ -97,53 +98,59 @@ export const KPCardActions = ({
 
   return (
     <>
-      <div className='flex grid-cols-3 justify-between'>
-        <LinkButton
-          disabled={!isIngetekent}
-          onClick={() => {
-            startTransition(() =>
-              uittekenen(
-                moment?.ID,
-                gebruiker.kookploeg_gebruiker_id,
-                kookploeg_id
-              )
-            );
-          }}
-        >
-          Uittekenen
-        </LinkButton>
-        <CircleButton
-          className='text-sky-700'
-          onClick={(e) => setExpanded((x) => !x)}
-        >
-          {expanded ? (
-            <FaArrowUp color='sky-700' />
-          ) : (
-            <FaArrowDown color='sky-700' />
-          )}
-        </CircleButton>
-        <LinkButton
-          onClick={() => {
-            moment
-              ? startTransition(() =>
-                  intekenen(
-                    moment?.ID,
-                    gebruiker.kookploeg_gebruiker_id,
-                    kookploeg_id
-                  )
+      <LeftMiddleRight
+        left={
+          <LinkButton
+            disabled={!isIngetekent}
+            onClick={() => {
+              startTransition(() =>
+                uittekenen(
+                  moment?.ID,
+                  gebruiker.kookploeg_gebruiker_id,
+                  kookploeg_id
                 )
-              : startTransition(() =>
-                  startMoment(
-                    gebruiker.kookploeg_gebruiker_id,
-                    kookploeg_id,
-                    datum.format('YYYY-MM-DD')
+              );
+            }}
+          >
+            Uittekenen
+          </LinkButton>
+        }
+        middle={
+          <CircleButton
+            className='text-sky-700'
+            onClick={(e) => setExpanded((x) => !x)}
+          >
+            {expanded ? (
+              <FaArrowUp color='sky-700' />
+            ) : (
+              <FaArrowDown color='sky-700' />
+            )}
+          </CircleButton>
+        }
+        right={
+          <LinkButton
+            onClick={() => {
+              moment
+                ? startTransition(() =>
+                    intekenen(
+                      moment?.ID,
+                      gebruiker.kookploeg_gebruiker_id,
+                      kookploeg_id
+                    )
                   )
-                );
-          }}
-        >
-          {isIngetekent ? 'Gast intekenen' : 'Intekenen'}
-        </LinkButton>
-      </div>
+                : startTransition(() =>
+                    startMoment(
+                      gebruiker.kookploeg_gebruiker_id,
+                      kookploeg_id,
+                      datum.format('YYYY-MM-DD')
+                    )
+                  );
+            }}
+          >
+            {isIngetekent ? 'Gast intekenen' : 'Intekenen'}
+          </LinkButton>
+        }
+      />
       {expanded && (
         <ul className={'border-t-2 border-slate-800 pt-4 mt-3'}>
           {expandedButtons.map((button, index) => (

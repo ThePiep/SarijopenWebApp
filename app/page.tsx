@@ -64,10 +64,10 @@ export default function HomePage() {
   };
   return (
     <main className='text-slate-900 '>
-      <div className='grid grid-flow-row-dense grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6'>
+      <div className='grid grid-flow-row-dense grid-cols-2 gap-3 lg:grid-cols-4 xl:grid-cols-6'>
         {kookploegRender()}
         <NieuwsCard
-          className='col-span-2 md:col-span-4 xl:col-span-6 '
+          className='col-span-2 lg:col-span-4 xl:col-span-6 '
           color='bg-pgreen-100'
         />
         {experimenteel && (
