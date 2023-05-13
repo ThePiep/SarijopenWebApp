@@ -6,10 +6,9 @@ import { RxLockClosed, RxLockOpen1 } from 'react-icons/rx';
 import dayjs, { Dayjs } from 'dayjs';
 import { TbChefHat } from 'react-icons/tb';
 import { GiSoap } from 'react-icons/gi';
-import Link from 'next/link';
-import { FaArrowDown } from 'react-icons/fa';
 import { KPCardActions } from './KPCardActions';
-import { getToken } from 'next-auth/jwt';
+import { Rechten, authOptions } from '@/pages/api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth';
 
 export type KookploegId = 1 | 2 | 3;
 
@@ -33,6 +32,8 @@ export const KPCard = async ({
   ...props
 }: Props) => {
   console.log({ datumKPCard: datum.format('YYYY-MM-DD') });
+
+  const { user } = (await getServerSession(authOptions)) ?? {};
 
   const extraCols = [
     'col-span-2',
@@ -122,18 +123,20 @@ export const KPCard = async ({
 
       {showDetails && (
         <>
-          <p className={'overflow-auto'}>
-            {JSON.stringify({
-              kok: kok?.naam,
-              voorspeldeKok: voorspeldeKok?.naam,
-              voorspeldeReserveKok: voorspeldeReserveKok?.naam,
-              afwas1: afwas1?.naam,
-              voorspeldeAfwas1: voorspeldeAfwas1?.naam,
-              afwas2: afwas2?.naam,
-              voorspeldeAfwas2: voorspeldeAfwas2?.naam,
-              voorspeldeReserveAfwas: voorspeldeReserveAfwas?.naam,
-            })}
-          </p>
+          {user?.rechten.includes(Rechten.webmaster) && (
+            <p className={'overflow-auto'}>
+              {JSON.stringify({
+                kok: kok?.naam,
+                voorspeldeKok: voorspeldeKok?.naam,
+                voorspeldeReserveKok: voorspeldeReserveKok?.naam,
+                afwas1: afwas1?.naam,
+                voorspeldeAfwas1: voorspeldeAfwas1?.naam,
+                afwas2: afwas2?.naam,
+                voorspeldeAfwas2: voorspeldeAfwas2?.naam,
+                voorspeldeReserveAfwas: voorspeldeReserveAfwas?.naam,
+              })}
+            </p>
+          )}
           <KPCardActions
             kok={kok}
             eters={eters}

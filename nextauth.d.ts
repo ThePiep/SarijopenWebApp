@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth';
+import { Rechten } from '@/pages/api/auth/[...nextauth]';
 
 declare module 'next-auth' {
   /**
@@ -9,6 +10,7 @@ declare module 'next-auth' {
     naam: string;
     kookploeg_voorkeur_id: number | null;
     kookploeg_gebruiker_id: number | null;
+    rechten: Rechten[];
   }
 
   interface Session extends DefaultSession {
@@ -22,5 +24,6 @@ declare module 'next-auth/jwt' {
     naam: string;
     kookploeg_voorkeur_id: number | null;
     kookploeg_gebruiker_id: number | null;
+    rechten: Rechten[];
   }
 }

@@ -1,3 +1,4 @@
+import { getRechtenVoorGebruiker } from '@/util/bewoners';
 import {
   getKookploegGebruikerIdByName,
   getKookploegVoorkeurByGebruikerId,
@@ -9,6 +10,20 @@ interface LoginResponse {
   success: number;
   userId?: number;
   message: string;
+}
+
+export enum Rechten {
+  bata,
+  bewoners,
+  bier,
+  boots,
+  diensten,
+  flatbak,
+  flatrekening,
+  fotoalbum,
+  koffie,
+  kooksysteem,
+  webmaster,
 }
 
 // For more information on each option (and a full list of options) go to
@@ -55,7 +70,7 @@ export const authOptions: NextAuthOptions = {
           data.append('pwd', credentials?.password);
         }
 
-        const res = await fetch(
+        const authResponse = await fetch(
           `${process.env.SARIJOPEN_URL}/flatpage/controller/login.php`,
           {
             method: 'POST',
@@ -63,39 +78,45 @@ export const authOptions: NextAuthOptions = {
           }
         );
 
-        const obj: LoginResponse = await res.json();
-        if (res.ok && obj !== undefined) {
-          console.log('json', obj);
+        const obj: LoginResponse = await authResponse.json();
+        if (authResponse.ok && obj !== undefined) {
+          console.log('auth response json', obj);
           if (obj.success !== 1) {
             // obj.message will hold error message
-            // throw new Error(obj.message) <- Example of possible use to show error message
             return null;
           }
           if (obj.success && obj.userId !== undefined) {
-            const kookploeg_gebruiker_id = await getKookploegGebruikerIdByName(
-              credentials.username
-            );
+            const kookploeg_gebruiker_id =
+              (await getKookploegGebruikerIdByName(credentials.username)) ??
+              null;
             let kookploeg_id = null;
-
             if (kookploeg_gebruiker_id) {
-              kookploeg_id = await getKookploegVoorkeurByGebruikerId(
-                kookploeg_gebruiker_id
-              );
+              kookploeg_id =
+                (await getKookploegVoorkeurByGebruikerId(
+                  kookploeg_gebruiker_id
+                )) ?? null;
             }
+
+            const rechten: Rechten[] = await getRechtenVoorGebruiker(
+              obj.userId
+            );
+            console.log({ rechten });
             return {
-              id: obj.userId.toString(),
+              id: obj.userId,
               name: credentials.username,
               naam: credentials.username,
               kookploeg_voorkeur_id: kookploeg_id,
               kookploeg_gebruiker_id: kookploeg_gebruiker_id ?? null,
+              rechten: rechten,
             };
           } else {
-            // userId is unexpectedly undefined
-            return null;
+            throw new Error(
+              'Unexpected auth server response, userId is undefined'
+            );
           }
         } else {
-          const text = await res.text();
-          console.log('error, enexpected auth server response: ', text);
+          const text = await authResponse.text();
+          console.log('Login failed, auth response text: ', text);
           return null;
         }
       },
@@ -107,6 +128,7 @@ export const authOptions: NextAuthOptions = {
         session.user.naam = token.name;
         session.user.kookploeg_voorkeur_id = token.kookploeg_voorkeur_id;
         session.user.kookploeg_gebruiker_id = token.kookploeg_gebruiker_id;
+        session.user.rechten = token.rechten;
       }
       return session;
     },
@@ -115,8 +137,12 @@ export const authOptions: NextAuthOptions = {
         token.naam = user.naam;
         token.kookploeg_voorkeur_id = user.kookploeg_voorkeur_id;
         token.kookploeg_gebruiker_id = user.kookploeg_gebruiker_id;
+        token.rechten = user.rechten;
       }
       return token;
+    },
+    redirect({ url, baseUrl }) {
+      return baseUrl;
     },
   },
 };

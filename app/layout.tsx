@@ -1,8 +1,6 @@
-'use client';
 import { SessionProvider, useSession } from 'next-auth/react';
 import './globals.css';
-import { IconContext } from 'react-icons';
-import { Nav } from '@/components/Nav';
+import { Nav } from '@/components/nav/Nav';
 import { ContentWrapper } from '@/components/ContentWrappers';
 
 export const metadata = {
@@ -24,14 +22,10 @@ export default function RootLayout({
 
       <link rel='manifest' href='/manifest.json' />
       <body className='bg-orange-50 min-h-screen font-gooper'>
-        <SessionProvider>
-          <IconContext.Provider
-            value={{ color: 'black', className: 'global-class-name' }}
-          >
-            <Nav />
-            <ContentWrapper>{children}</ContentWrapper>
-          </IconContext.Provider>
-        </SessionProvider>
+        <Nav />
+
+        <div className={'container mx-auto px-2 pt-24 pb-6 '}>{children}</div>
+        {/* <ContentWrapper>{children}</ContentWrapper> */}
       </body>
     </html>
   );
