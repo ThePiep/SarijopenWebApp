@@ -1,6 +1,5 @@
 import './globals.css';
 import { Nav } from '@/components/nav/Nav';
-import { ContentWrapper } from '@/components/ContentWrappers';
 
 export const metadata = {
   title: 'Huize Sarijopen',
