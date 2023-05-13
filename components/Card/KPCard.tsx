@@ -121,9 +121,9 @@ export const KPCard = async ({
         </div>
       </div>
 
-      {showDetails && (
+      {showDetails && user && (
         <>
-          {user?.rechten.includes(Rechten.webmaster) && (
+          {user.rechten.includes(Rechten.webmaster) && (
             <p className={'overflow-auto'}>
               {JSON.stringify({
                 kok: kok?.naam,
@@ -143,6 +143,7 @@ export const KPCard = async ({
             moment={moment}
             kookploeg_id={kookploeg}
             day_string={datum.format('YYYY-MM-DD')}
+            gebruiker={user}
           />
         </>
       )}

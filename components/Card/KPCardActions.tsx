@@ -20,6 +20,7 @@ import { useSession } from 'next-auth/react';
 import { KookploegId } from './KPCard';
 import { CircleButton } from '../Button/CircleButton';
 import dayjs, { Dayjs } from 'dayjs';
+import { User } from 'next-auth';
 
 interface Props {
   kok?: KookploegMomentEter;
@@ -27,6 +28,7 @@ interface Props {
   moment?: kookploeg_momenten;
   kookploeg_id: KookploegId;
   day_string: string;
+  gebruiker: User;
 }
 
 export const KPCardActions = ({
@@ -35,17 +37,17 @@ export const KPCardActions = ({
   moment,
   kookploeg_id,
   day_string,
+  gebruiker,
 }: Props) => {
   const datum = dayjs(day_string);
   console.log({ datumAtClient: datum, day_string });
   const [expanded, setExpanded] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const { data } = useSession();
 
   const isIngetekent = useMemo(() => {
     return (
       eters &&
-      !!eters.find((e) => e.GebruikerID === data?.user.kookploeg_gebruiker_id)
+      !!eters.find((e) => e.GebruikerID === gebruiker?.kookploeg_gebruiker_id)
     );
   }, [eters]);
 
@@ -59,7 +61,7 @@ export const KPCardActions = ({
             : startTransition(() =>
                 addKok(
                   moment?.ID,
-                  data?.user.kookploeg_gebruiker_id,
+                  gebruiker.kookploeg_gebruiker_id,
                   kookploeg_id
                 )
               );
@@ -102,7 +104,7 @@ export const KPCardActions = ({
             startTransition(() =>
               uittekenen(
                 moment?.ID,
-                data?.user.kookploeg_gebruiker_id,
+                gebruiker.kookploeg_gebruiker_id,
                 kookploeg_id
               )
             );
@@ -126,13 +128,13 @@ export const KPCardActions = ({
               ? startTransition(() =>
                   intekenen(
                     moment?.ID,
-                    data?.user.kookploeg_gebruiker_id,
+                    gebruiker.kookploeg_gebruiker_id,
                     kookploeg_id
                   )
                 )
               : startTransition(() =>
                   startMoment(
-                    data?.user.kookploeg_gebruiker_id,
+                    gebruiker.kookploeg_gebruiker_id,
                     kookploeg_id,
                     datum.format('YYYY-MM-DD')
                   )

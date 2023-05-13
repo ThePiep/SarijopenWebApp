@@ -1,4 +1,3 @@
-import { SessionProvider, useSession } from 'next-auth/react';
 import './globals.css';
 import { Nav } from '@/components/nav/Nav';
 import { ContentWrapper } from '@/components/ContentWrappers';
